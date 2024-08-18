@@ -6,8 +6,12 @@ import json
 from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
 import ast
 import os
+import pandas as pd
+import pydeck as pdk
 
-OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+from geopy.geocoders import Nominatim
+
+OPENAI_API_KEY = os.getenv("OPENAI_API_KEY")
 
 if OPENAI_API_KEY is None:
     print("Error: OPENAI_API_KEY is not set.")
@@ -33,13 +37,15 @@ preferences = travel_keywords = [
     "Cooking classes & culinary experiences",
     "Wine, brewery & beverage tastings",
     "Zoos, aquariums & wildlife",
-    "Theater, concerts & live performances"
+    "Theater, concerts & live performances",
 ]
 
-traveling_options = ['Friend', 'Family', 'Couple', 'Solo', 'Group']
+traveling_options = ["Friend", "Family", "Couple", "Solo", "Group"]
 
 
-def get_itinerary(location, date, traveling_with, preferences, additional_preferences, outsourced = None) -> dict:
+def get_itinerary(
+    location, date, traveling_with, preferences, additional_preferences, outsourced=None
+) -> dict:
     """
     :param location: str
     :param date: list
@@ -49,13 +55,21 @@ def get_itinerary(location, date, traveling_with, preferences, additional_prefer
     :return: itinerary: dict
     """
     for _ in range(3):
-        json_string = raw_itinerary(location, date, traveling_with, preferences, additional_preferences, outsourced = None)
+        json_string = raw_itinerary(
+            location,
+            date,
+            traveling_with,
+            preferences,
+            additional_preferences,
+            outsourced=None,
+        )
         try:
             ast.literal_eval(json_string)
             return json.loads(json_string)
         except:
             pass
     return "Failed"
+
 
 def generate_video(itinerary) -> str:
     """
@@ -66,9 +80,12 @@ def generate_video(itinerary) -> str:
     filepath = generate_tiktok(itinerary)
     return filepath
 
-def raw_itinerary(location, date, traveling_with, preferences, additional_preferences, outsourced = None):
-  
-  itinerary_user_prompt = f"""
+
+def raw_itinerary(
+    location, date, traveling_with, preferences, additional_preferences, outsourced=None
+):
+
+    itinerary_user_prompt = f"""
   Location: {location}.
   Date: {date}.
   Who I am traveling with: {traveling_with}.
@@ -76,13 +93,73 @@ def raw_itinerary(location, date, traveling_with, preferences, additional_prefer
   Additional preferences: {additional_preferences}.
   Data/recommendations from some prominent webpages: {outsourced}.
   """
-  generate_itinerary_client = OpenAI(api_key= OPENAI_API_KEY)
-  itinerary_response = generate_itinerary_client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-      {"role": "system", "content": itinerary_system_prompt},
-      {"role": "user", "content": itinerary_user_prompt}
-    ]
-  )
-  raw_itinerary = itinerary_response.choices[0].message.content
-  return raw_itinerary
+    generate_itinerary_client = OpenAI(api_key=OPENAI_API_KEY)
+    itinerary_response = generate_itinerary_client.chat.completions.create(
+        model="gpt-4o-mini",
+        messages=[
+            {"role": "system", "content": itinerary_system_prompt},
+            {"role": "user", "content": itinerary_user_prompt},
+        ],
+    )
+    raw_itinerary = itinerary_response.choices[0].message.content
+    return raw_itinerary
+
+
+import pandas as pd
+import pydeck as pdk
+
+from geopy.geocoders import Nominatim
+
+
+def get_lat_long(place_name):
+    geolocator = Nominatim(user_agent="travel_buddy_application")
+    location = geolocator.geocode(place_name)
+    if location:
+        return (location.latitude, location.longitude)
+    else:
+        return None
+
+
+def get_map(plan, city):
+    city_loc = get_lat_long(city)
+    if city_loc is None:
+        print("Couldn't get location of the city")
+        return None
+
+    locations = []
+    for v in plan.values():
+        for x in v:
+            locations.append(x["location"])
+
+    lat_lon = [x for x in map(get_lat_long, locations) if x]
+    lat_lon.append(city_loc)
+    chart_data = pd.DataFrame(
+        data=dict(
+            lat=[x[0] for x in lat_lon],
+            lon=[x[1] for x in lat_lon],
+        )
+    )
+    # st.dataframe(chart_data)
+    # chart_data.columns = ["lat", "lon"]
+    layers = pdk.Layer(
+        "HexagonLayer",
+        data=chart_data,
+        get_position=["lon", "lat"],
+        radius=200,
+        elevation_scale=4,
+        elevation_range=[0, 3000],
+        pickable=True,
+        extruded=True,
+    )
+    map_ = pdk.Deck(
+        map_style=None,
+        initial_view_state=pdk.ViewState(
+            latitude=city_loc[0],
+            longitude=city_loc[1],
+            zoom=11,
+            pitch=50,
+        ),
+        layers=[layers],
+    )
+    return map_
+
