@@ -120,9 +120,15 @@ standard_output = """{
 }"""
 
 
+itinerary_system_prompt = f"""
+    You are a helpful assistant which generates a travel itinerary. 
+    You will receive a location, date, who I am traveling with, preferences on activities, and some additional preferences.
+    In addition, I will give you the bodies of some online webpages on the topic, and you can incorporate some of their suggestions into the itinerary.  
+    That is, you will generate an itinerary from the inputs based on your knowledge as a travel assistant. 
 
-
-
-json_system_prompt = f"""
-
-"""
+    You should output this itinerary as a json-formatted string. First break it up into days (these are the keys).
+    Within each day, we will have a list of activities, where each avitivity will have the keys 'location', 'type_of_place', 'description', and 'approximate_duration'.
+    The output should be a json-formatted string which I could pass into json.loads to get a json object. 
+    The output string needs to be a standard JSON string without any extraneous characters such as triple backticks and newline indicators, and should not include the string "json" at the beginning. 
+    An example would be {standard_output}
+  """
