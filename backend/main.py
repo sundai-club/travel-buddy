@@ -1,5 +1,10 @@
 from itinerary_generator import generate_itinerary
 from tiktok_generator import generate_tiktok
+import openai
+from openai import OpenAI
+import json
+from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
+import ast
 
 preferences = travel_keywords = [
     "Historical landmarks & museums",
@@ -35,9 +40,14 @@ def get_itinerary(location, date, traveling_with, preferences, additional_prefer
     :param additional_preferences: str
     :return: itinerary: dict
     """
-    itinerary = generate_itinerary(location, date, traveling_with, preferences, additional_preferences)
-    return itinerary
-
+    # while True:
+    raw_itinerary_text = raw_itinerary(location, date, traveling_with, preferences, additional_preferences)
+    json_string = convert_to_json(raw_itinerary_text)
+    try:
+        ast.literal_eval(json_string)
+        return json.load(json_string)
+    except:
+        return "Failed"
 
 def generate_video(itinerary) -> str:
     """
@@ -47,3 +57,39 @@ def generate_video(itinerary) -> str:
     """
     filepath = generate_tiktok(itinerary)
     return filepath
+
+def raw_itinerary(location, date, traveling_with, preferences, additional_preferences):
+  
+  itinerary_user_prompt = f"""
+  Location: {location}.
+  Date: {date}.
+  Who I am traveling with: {traveling_with}.
+  Preferences on activites: {preferences}.
+  Additional preferences: {additional_preferences}.
+  """
+  generate_itinerary_client = OpenAI(api_key= OPENAI_API_KEY)
+  itinerary_response = generate_itinerary_client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+      {"role": "system", "content": itinerary_system_prompt},
+      {"role": "user", "content": itinerary_user_prompt}
+    ]
+  )
+  raw_itinerary = itinerary_response.choices[0].message.content
+  return raw_itinerary
+
+
+def convert_to_json(raw_itinerary):
+  json_user_prompt = raw_itinerary
+  convert_to_json_client = OpenAI(api_key= OPENAI_API_KEY)
+
+
+  response = convert_to_json_client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+      {"role": "system", "content": json_system_prompt},
+      {"role": "user", "content": json_user_prompt}
+    ]
+  )
+  output = response.choices[0].message.content
+  return output
