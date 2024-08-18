@@ -9,7 +9,6 @@ import ast
 import os
 import pandas as pd
 import pydeck as pdk
-from generate_itinerary import getContent
 
 from geopy.geocoders import Nominatim
 
