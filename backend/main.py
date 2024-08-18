@@ -7,6 +7,7 @@ import json
 from stored_strings import standard_output, itinerary_system_prompt
 import ast
 import os
+import uuid
 from get_preferences_from_questionnaire import get_preferences
 import pandas as pd
 import pydeck as pdk
@@ -46,7 +47,7 @@ traveling_options = ["Friend", "Family", "Couple", "Solo", "Group"]
 
 
 def get_itinerary(
-        location, date, traveling_with, preferences, additional_preferences, outsourced=None
+    location, date, traveling_with, preferences, additional_preferences, outsourced=None
 ) -> dict:
     """
     :param location: str
@@ -87,13 +88,14 @@ def generate_video(itinerary) -> str:
     :return: filepath: str
     """
     print("Generating Video ...")
-    filepath = generate_tiktok(itinerary)
+    save_path = f"data/{uuid.uuid4()}.mp4"
+    filepath = generate_tiktok(itinerary, save_path)
     print("Video saved at:", filepath)
     return filepath
 
 
 def raw_itinerary(
-        location, date, traveling_with, preferences, additional_preferences, outsourced=None
+    location, date, traveling_with, preferences, additional_preferences, outsourced=None
 ):
     itinerary_user_prompt = f"""
   Location: {location}.
