@@ -4,11 +4,12 @@ import Link from "next/link";
 const HeroSection: React.FC = () => {
   return (
     <section className="flex h-screen w-full flex-col items-center justify-center bg-gray-100 lg:flex-row">
-      {/* Left Side - Image/Map */}
       <div className="relative h-full w-full lg:w-1/2">
-        <img
-          src="/path-to-your-image.png" // Replace this with the actual path to your image
-          alt="Map of Kanazawa"
+        <video
+          src="1.mp4" // Replace this with the actual path to your video
+          autoPlay
+          loop
+          muted
           className="h-full w-full object-cover"
         />
         <div className="absolute left-10 top-10 text-2xl font-bold text-white">
