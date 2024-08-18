@@ -5,6 +5,14 @@ from openai import OpenAI
 import json
 from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
 import ast
+import os
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+if OPENAI_API_KEY is None:
+    print("Error: OPENAI_API_KEY is not set.")
+else:
+    print("API Key retrieved successfully.")
 
 preferences = travel_keywords = [
     "Historical landmarks & museums",
@@ -31,7 +39,7 @@ preferences = travel_keywords = [
 traveling_options = ['Friend', 'Family', 'Couple', 'Solo', 'Group']
 
 
-def get_itinerary(location, date, traveling_with, preferences, additional_preferences) -> dict:
+def get_itinerary(location, date, traveling_with, preferences, additional_preferences, outsourced = None) -> dict:
     """
     :param location: str
     :param date: list
@@ -40,14 +48,14 @@ def get_itinerary(location, date, traveling_with, preferences, additional_prefer
     :param additional_preferences: str
     :return: itinerary: dict
     """
-    # while True:
-    raw_itinerary_text = raw_itinerary(location, date, traveling_with, preferences, additional_preferences)
-    json_string = convert_to_json(raw_itinerary_text)
-    try:
-        ast.literal_eval(json_string)
-        return json.loads(json_string)
-    except:
-        return "Failed"
+    for _ in range(3):
+        json_string = raw_itinerary(location, date, traveling_with, preferences, additional_preferences, outsourced = None)
+        try:
+            ast.literal_eval(json_string)
+            return json.loads(json_string)
+        except:
+            pass
+    return "Failed"
 
 def generate_video(itinerary) -> str:
     """
@@ -58,7 +66,7 @@ def generate_video(itinerary) -> str:
     filepath = generate_tiktok(itinerary)
     return filepath
 
-def raw_itinerary(location, date, traveling_with, preferences, additional_preferences):
+def raw_itinerary(location, date, traveling_with, preferences, additional_preferences, outsourced = None):
   
   itinerary_user_prompt = f"""
   Location: {location}.
@@ -66,6 +74,7 @@ def raw_itinerary(location, date, traveling_with, preferences, additional_prefer
   Who I am traveling with: {traveling_with}.
   Preferences on activites: {preferences}.
   Additional preferences: {additional_preferences}.
+  Data/recommendations from some prominent webpages: {outsourced}.
   """
   generate_itinerary_client = OpenAI(api_key= OPENAI_API_KEY)
   itinerary_response = generate_itinerary_client.chat.completions.create(
@@ -77,19 +86,3 @@ def raw_itinerary(location, date, traveling_with, preferences, additional_prefer
   )
   raw_itinerary = itinerary_response.choices[0].message.content
   return raw_itinerary
-
-
-def convert_to_json(raw_itinerary):
-  json_user_prompt = raw_itinerary
-  convert_to_json_client = OpenAI(api_key= OPENAI_API_KEY)
-
-
-  response = convert_to_json_client.chat.completions.create(
-    model="gpt-4o-mini",
-    messages=[
-      {"role": "system", "content": json_system_prompt},
-      {"role": "user", "content": json_user_prompt}
-    ]
-  )
-  output = response.choices[0].message.content
-  return output
