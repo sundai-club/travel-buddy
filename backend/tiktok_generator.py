@@ -24,7 +24,7 @@ def generate_tiktok(itinerary, save_dir):
     output_video_paths = []
     for i, item in enumerate(prompt):
         # create audio from script
-        audio_filename = f"{os.path.basename}_speech_{i}"
+        audio_filename = f"{os.path.basename(save_dir)}_speech_{i}"
         audio_path, transcription_data = (
             tiktokgen.script_snippet_to_audio.generate_speech_and_transcription(
                 item["text"], filename=audio_filename
@@ -58,5 +58,4 @@ def generate_tiktok(itinerary, save_dir):
 if __name__ == "__main__":
     with open("data/dymmy_itirenary_small.json", "r") as file:
         inp_script = json.loads(file.read())
-    generate_tiktok(inp_script, save_path="data/sample_video.mp4")
-
+    generate_tiktok(inp_script, save_dir=f"data/test_dir")
