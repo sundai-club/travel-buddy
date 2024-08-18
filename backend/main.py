@@ -45,7 +45,7 @@ def get_itinerary(location, date, traveling_with, preferences, additional_prefer
     json_string = convert_to_json(raw_itinerary_text)
     try:
         ast.literal_eval(json_string)
-        return json.load(json_string)
+        return json.loads(json_string)
     except:
         return "Failed"
 
