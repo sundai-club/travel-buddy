@@ -1,5 +1,4 @@
 import React from "react";
-import Link from "next/link";
 
 const HeroSection: React.FC = () => {
   return (
@@ -18,14 +17,30 @@ const HeroSection: React.FC = () => {
       </div>
 
       {/* Right Side - Text Content */}
-      <div className="flex h-full w-full flex-col items-center justify-center p-8 text-center lg:w-1/2">
-        <h2 className="mb-4 text-4xl font-bold text-gray-800 lg:text-6xl">
+      <div className="relative flex h-full w-full flex-col items-center justify-center p-8 text-center lg:w-1/2">
+        {/* Top Sliding Text */}
+        <div className="absolute top-0 w-full overflow-hidden">
+          <div className="animate-slide-left whitespace-nowrap text-xl font-semibold text-gray-800">
+            travel buddy travel buddy travel buddy travel buddy travel buddy
+            travel buddy travel buddy
+          </div>
+        </div>
+
+        <h2 className="mb-4 mt-8 text-4xl font-bold text-gray-800 lg:text-6xl">
           Eager to take off?
         </h2>
         <p className="mb-4 text-lg text-gray-600">start planning now with</p>
         <h1 className="text-5xl font-extrabold text-red-500 lg:text-7xl">
           Travel Buddy
         </h1>
+
+        {/* Bottom Rolling Text */}
+        <div className="absolute bottom-0 w-full overflow-hidden">
+          <div className="animate-slide-right whitespace-nowrap text-xl font-semibold text-gray-800">
+            travel smarter travel smarter travel smarter travel smarter travel
+            smarter travel smarter travel smarter
+          </div>
+        </div>
       </div>
     </section>
   );
