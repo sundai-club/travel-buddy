@@ -23,6 +23,8 @@ preferences = travel_keywords = [
     "Theater, concerts & live performances"
 ]
 
+traveling_options = ['Friend', 'Family', 'Couple', 'Solo', 'Group']
+
 
 def get_itinerary(location, date, traveling_with, preferences, additional_preferences) -> dict:
     """
