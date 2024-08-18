@@ -37,13 +37,14 @@ def get_web_search_results(query):
     return parsed_data
 
 
-def get_food_recommendations(location):
+def get_food_recommendations_data(location):
     food_recommendation_prompt = '''
     Based on the given location and results from top google searches, write a point wise restaurant recommendation based on the scraped info.
     mention the restaurant name, cuisine it is famous for, address(if available), and rating.
     location: {location}
     scraped_data: {scraped_data}
-
+    
+    Just output the recommendation in markdown.
     recommendations:
     '''
     scraped_data = get_web_search_results(get_query(location))
