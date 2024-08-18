@@ -71,10 +71,9 @@ health_needs = [
     "Need assistance with mobility",
     "Require special dietary considerations",
     "Have a medical condition that needs attention",
-    "Other (please specify)",
 ]
 
-selected_health_needs = st.multiselect(
+selected_health_needs = st.selectbox(
     "Select any health or accessibility needs:", health_needs
 )
 
@@ -90,17 +89,6 @@ selected_preferences = st.multiselect(
 # Second row of input fields
 
 
-q1 = "Additional Question 1"
-a1 = st.text_area("Additional Question 1")
-q2 = "Additional Question 2"
-a2 = st.text_area("Additional Question 2")
-q3 = "Additional Question 3"
-a3 = st.text_area(q3)
-
-additional_preferences = [
-    f"Question: {q}\nAnswer: {a}\n\n" for q, a in zip([q1, q2, q3], [a1, a2, a3])
-]
-
 # Submit button and processing
 if st.button("Submit"):
     with st.spinner("Generating itinerary..."):
@@ -109,7 +97,7 @@ if st.button("Submit"):
             [start_date_str, end_date_str],
             people,
             "\n".join(selected_preferences),
-            additional_preferences,
+            questionnaire,
         )
         st.success("Itinerary generated successfully!")
         st.markdown(utils.json_to_markdown(itinerary))
