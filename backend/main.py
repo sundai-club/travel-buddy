@@ -5,6 +5,14 @@ from openai import OpenAI
 import json
 from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
 import ast
+import os
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+if OPENAI_API_KEY is None:
+    print("Error: OPENAI_API_KEY is not set.")
+else:
+    print("API Key retrieved successfully.")
 
 preferences = travel_keywords = [
     "Historical landmarks & museums",
