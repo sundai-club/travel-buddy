@@ -71,3 +71,19 @@ def raw_itinerary(location, date, traveling_with, preferences, additional_prefer
   )
   raw_itinerary = itinerary_response.choices[0].message.content
   return raw_itinerary
+
+
+def convert_to_json(raw_itinerary):
+  json_user_prompt = raw_itinerary
+  convert_to_json_client = OpenAI(api_key= OPENAI_API_KEY)
+
+
+  response = convert_to_json_client.chat.completions.create(
+    model="gpt-4o-mini",
+    messages=[
+      {"role": "system", "content": json_system_prompt},
+      {"role": "user", "content": json_user_prompt}
+    ]
+  )
+  output = response.choices[0].message.content
+  return json.loads(output)
