@@ -84,3 +84,5 @@ if st.button("Submit"):
         st.markdown(itinerary)
         map_ = main.get_map(itinerary, city)
         st.pydeck_chart(map_)
+        food_recommendations = main.get_food_recommendations_(city)
+        st.write(food_recommendations)
