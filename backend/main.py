@@ -88,8 +88,8 @@ def generate_video(itinerary) -> str:
     :return: filepath: str
     """
     print("Generating Video ...")
-    save_path = f"data/{uuid.uuid4()}.mp4"
-    filepath = generate_tiktok(itinerary, save_path)
+    save_dir = f"data/{uuid.uuid4()}"
+    filepath = generate_tiktok(itinerary, save_dir)
     print("Video saved at:", filepath)
     return filepath
 
