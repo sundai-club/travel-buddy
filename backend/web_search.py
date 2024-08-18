@@ -7,8 +7,14 @@ search_url = "https://api.bing.microsoft.com/v7.0/search"
 def search_web(queries, count=5):
     results = {}
     for query in queries:
-        headers = {"Ocp-Apim-Subscription-Key": os.getenv('BING_SEARCH_API_KEY')}
-        params = {"q": query, "textDecorations": True, "textFormat": "HTML", "count": count}
+        print("    Searching for query:", query)
+        headers = {"Ocp-Apim-Subscription-Key": os.getenv("BING_SEARCH_API_KEY")}
+        params = {
+            "q": query,
+            "textDecorations": True,
+            "textFormat": "HTML",
+            "count": count,
+        }
 
         # Make the request to Bing API
 
@@ -26,9 +32,6 @@ def search_web(queries, count=5):
         for res in value["webPages"]["value"]:
             url = res["url"]
             title = res["name"]
-            final_results[key].append({
-                "url": url,
-                "title": title
-            })
+            final_results[key].append({"url": url, "title": title})
 
     return final_results

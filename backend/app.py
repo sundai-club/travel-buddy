@@ -1,31 +1,6 @@
 import streamlit as st
-import time
 import main
-
-
-def generate_itinerary(address, days, people, q1, q2, q3):
-    # Simulate a delay for processing
-    time.sleep(10)
-
-    # Create a mock itinerary
-    itinerary = f"""
-    **Itinerary for {people} people:**
-
-    **Address:** {address}
-    **Duration:** {days} days
-
-    **Details:**
-    - **Day 1:** Arrival at {address}. Explore local attractions.
-    - **Day 2-{int(days) - 1}:** Various activities tailored for {people} people.
-    - **Day {days}:** Departure.
-
-    **Additional Information:**
-    - **Question 1 Response:** {q1}
-    - **Question 2 Response:** {q2}
-    - **Question 3 Response:** {q3}
-    """
-
-    return itinerary
+import utils
 
 
 # First row of input fields
@@ -67,7 +42,7 @@ q3 = "Additional Question 3"
 a3 = st.text_area(q3)
 
 additional_preferences = [
-    f"Question: {q1}\nAnswer: {a}\n\n" for q, a in zip([q1, q2, q3], [a1, a2, a3])
+    f"Question: {q}\nAnswer: {a}\n\n" for q, a in zip([q1, q2, q3], [a1, a2, a3])
 ]
 
 # Submit button and processing
@@ -81,7 +56,7 @@ if st.button("Submit"):
             additional_preferences,
         )
         st.success("Itinerary generated successfully!")
-        st.markdown(itinerary)
+        st.markdown(utils.json_to_markdown(itinerary))
 
     with st.spinner("Generating map..."):
         map_ = main.get_map(itinerary, city)
