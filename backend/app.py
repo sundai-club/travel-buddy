@@ -90,3 +90,7 @@ if st.button("Submit"):
     with st.spinner("Generating food recommendations ..."):
         food_recommendations = main.get_food_recommendations_(city)
         st.write(food_recommendations)
+
+    with st.spinner("Generating video ..."):
+        filepath = main.generate_video(itinerary)
+        st.video(filepath)
