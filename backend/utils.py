@@ -1,8 +1,9 @@
 import json
 from typing import Dict, List
 
+
 def json_to_markdown(data: Dict[str, List[Dict[str, str]]]) -> str:
-    markdown = "# Dubai Travel Itinerary\n\n"
+    markdown = "# Travel Itinerary\n\n"
 
     for day, activities in data.items():
         markdown += f"## {day.capitalize()}\n\n"
