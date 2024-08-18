@@ -1,4 +1,4 @@
-from itinerary_generator import generate_itinerary
+from get_web_info import get_itinerary_info
 from tiktok_generator import generate_tiktok
 import openai
 from openai import OpenAI
@@ -62,7 +62,7 @@ def get_itinerary(
             traveling_with,
             preferences,
             additional_preferences,
-            outsourced=getContent(location, date, traveling_with, preferences, additional_preferences)
+            outsourced=get_itinerary_info(location, date, traveling_with, preferences, additional_preferences)
         )
         try:
             ast.literal_eval(json_string)
