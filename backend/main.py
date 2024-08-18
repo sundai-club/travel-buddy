@@ -4,12 +4,12 @@ from tiktok_generator import generate_tiktok
 import openai
 from openai import OpenAI
 import json
-from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
+from stored_strings import standard_output, itinerary_system_prompt
 import ast
 import os
 import pandas as pd
 import pydeck as pdk
-from generate_itinerary import *
+from generate_itinerary import getContent
 
 from geopy.geocoders import Nominatim
 
