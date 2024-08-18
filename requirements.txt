@@ -1,1 +1,2 @@
-git+https://github.com/sundai-club/TikTok_generation_platform.git@1b31a34ef2ffe43845d0243388bd1b9a69989ff5
+openai
+ast
