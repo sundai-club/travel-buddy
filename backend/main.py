@@ -7,6 +7,7 @@ import json
 from stored_strings import standard_output, itinerary_system_prompt
 import ast
 import os
+from get_preferences_from_questionnaire import get_preferences
 import pandas as pd
 import pydeck as pdk
 
@@ -45,7 +46,7 @@ traveling_options = ["Friend", "Family", "Couple", "Solo", "Group"]
 
 
 def get_itinerary(
-    location, date, traveling_with, preferences, additional_preferences, outsourced=None
+        location, date, traveling_with, preferences, additional_preferences, outsourced=None
 ) -> dict:
     """
     :param location: str
@@ -92,9 +93,8 @@ def generate_video(itinerary) -> str:
 
 
 def raw_itinerary(
-    location, date, traveling_with, preferences, additional_preferences, outsourced=None
+        location, date, traveling_with, preferences, additional_preferences, outsourced=None
 ):
-
     itinerary_user_prompt = f"""
   Location: {location}.
   Date: {date}.
@@ -178,3 +178,8 @@ def get_map(plan, city):
 def get_food_recommendations_(city_name):
     print("Generating food recommendations ...")
     return get_food_recommendations_data(city_name)
+
+
+def get_dynamic_preferences(questionnaire):
+    print("Getting dynamic preferences ...")
+    return get_preferences(questionnaire)

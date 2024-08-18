@@ -1,7 +1,7 @@
 import streamlit as st
 import main
 import utils
-
+from experience_mappings import travel_experiences
 
 # First row of input fields
 col1, col2, col3, col4 = st.columns(4)
@@ -18,15 +18,72 @@ with col4:
     traveling_options = ["Friend", "Family", "Couple", "Solo", "Group"]
     people = st.radio("Who are you traveling with?", traveling_options)
 
-preferences = travel_keywords = [
-    "Historical landmarks & museums",
-    "City tours & sightseeing",
-    "Local cuisine & food tours",
-    "Beaches & relaxation",
-    "Hiking & nature trails",
-    "Botanical gardens & parks",
-    "Nightlife & entertainment",
+questionnaire = ''
+
+q_1 = "What type of travel experience are you hoping to create or remember?"
+# Travel Experience Type
+st.header(q_1)
+experience_types = [
+    "Cultural Immersion",
+    "Adventure Travel",
+    "Relaxation and Wellness",
+    "Historical Exploration",
+    "Nature and Wildlife",
+    "Urban Exploration",
+    "Culinary Travel",
+    "Volunteering",
+    "Luxury Travel",
+    "Road Trips"
 ]
+
+selected_experiences = st.multiselect(
+    "Select the types of travel experiences you're interested in:",
+    experience_types
+)
+
+selected_experiences = '\n'.join(
+    [experience + '\n' + travel_experiences[experience] for experience in selected_experiences])
+
+questionnaire += q_1 + '\n' + selected_experiences + '\n'
+
+q_2 = "Do you prefer active or relaxed travel experiences?"
+# Travel Preferences
+st.header(q_2)
+travel_preferences = [
+    "Mostly active and adventurous",
+    "Mostly relaxed and laid-back",
+    "A mix of both active and relaxed",
+    "Other (please specify)"
+]
+
+selected_preference = st.selectbox(
+    "Select your preference:",
+    travel_preferences
+)
+questionnaire += q_2 + '\n' + selected_preference + '\n'
+
+
+q_3 = "Are there any health or accessibility needs we should consider?"
+# Health or Accessibility Needs
+st.header(q_3)
+health_needs = [
+    "No specific needs",
+    "Need assistance with mobility",
+    "Require special dietary considerations",
+    "Have a medical condition that needs attention",
+    "Other (please specify)"
+]
+
+selected_health_needs = st.multiselect(
+    "Select any health or accessibility needs:",
+    health_needs
+)
+
+questionnaire += q_3 + '\n' + selected_health_needs + '\n'
+
+
+travel_keywords = main.get_preferences(questionnaire)
+
 
 selected_preferences = st.multiselect(
     "Select your travel preferences:", travel_keywords
