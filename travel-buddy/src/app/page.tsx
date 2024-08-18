@@ -8,7 +8,7 @@ export default async function Home() {
 
   return (
     <HydrateClient>
-      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white">
+      <main className="flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-red-500 to-red-300 text-white">
         {/* Hero Section */}
         <HeroSection />
 
@@ -17,11 +17,11 @@ export default async function Home() {
           id="app-integration"
           className="container flex flex-col items-center justify-center gap-12 px-4 py-16"
         >
-          <h2 className="text-4xl font-extrabold text-white">Integrated App</h2>
           <iframe
+            // todo: replace with actual iframe of the AWS instance
             src="https://your-app-url.com"
             title="Integrated App"
-            className="h-96 w-full rounded-xl border-2 border-white"
+            className="h-screen w-full rounded-xl"
           ></iframe>
         </section>
       </main>
