@@ -22,7 +22,7 @@ def get_itinerary_info(
         location, date, traveling_with, preferences, additional_preferences
     )
 
-    web_search_results = search_web(queries)
+    web_search_results = search_web(queries, count=2)
 
     urls = []
     for k, v in web_search_results.items():

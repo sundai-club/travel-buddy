@@ -101,6 +101,7 @@ def raw_itinerary(
   Additional preferences: {additional_preferences}.
   Data/recommendations from some prominent webpages: {outsourced}.
   """
+    print("Calling GPT-4o mini ...")
     generate_itinerary_client = OpenAI(api_key=OPENAI_API_KEY)
     itinerary_response = generate_itinerary_client.chat.completions.create(
         model="gpt-4o-mini",
