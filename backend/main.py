@@ -144,7 +144,6 @@ def get_map(plan, city):
             locations.append(x["location"])
 
     lat_lon = [x for x in map(get_lat_long, locations) if x]
-    lat_lon.append(city_loc)
     chart_data = pd.DataFrame(
         data=dict(
             lat=[x[0] for x in lat_lon],
