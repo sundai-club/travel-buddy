@@ -1,6 +1,16 @@
 import openai
+import re
+import json
 
 openai_client = openai.OpenAI()
+
+
+def parse_response(response):
+    response = re.findall(r"```json(.*?)```", response, re.DOTALL)
+    if len(response) == 0:
+        return None
+    response = response[0].strip()
+    return json.loads(response)
 
 
 def get_preferences(questionnaire):
@@ -17,8 +27,30 @@ def get_preferences(questionnaire):
 
     output:
     """
-    response = openai_client.chat.completions.create(
-        model="gpt-4o-mini",
-        messages=[{"role": "user", "content": prompt}],
-    )
-    return response.choices[0].message.content
+
+    preferences = None
+    max_tries = 3
+    while preferences is None:
+        response = (
+            openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+            )
+            .choices[0]
+            .message.content
+        )
+        preferences = parse_response(response)
+        max_tries -= 1
+        if max_tries == 0:
+            break
+    if preferences is None:
+        return [
+            "Historical landmarks & museums",
+            "City tours & sightseeing",
+            "Local cuisine & food tours",
+            "Beaches & relaxation",
+            "Hiking & nature trails",
+            "Botanical gardens & parks",
+            "Nightlife & entertainment",
+        ]
+    return preferences["preferences"]
