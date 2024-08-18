@@ -18,7 +18,7 @@ export default async function Home() {
           className="container flex flex-col items-center justify-center gap-12 px-4 py-2"
         >
           <iframe
-            src="https://18.118.115.69/"
+            src="https://travel-streamlit.sundai.club"
             title="Integrated App"
             className="h-screen w-full rounded-xl"
           ></iframe>
