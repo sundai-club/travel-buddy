@@ -55,6 +55,10 @@ def get_itinerary(
     :param additional_preferences: str
     :return: itinerary: dict
     """
+    print("Getting information from web ...")
+    outsourced = get_itinerary_info(
+        location, date, traveling_with, preferences, additional_preferences
+    )
     print("Generating itinerary ... ")
     for _ in range(3):
         json_string = raw_itinerary(
@@ -63,9 +67,7 @@ def get_itinerary(
             traveling_with,
             preferences,
             additional_preferences,
-            outsourced=get_itinerary_info(
-                location, date, traveling_with, preferences, additional_preferences
-            ),
+            outsourced=outsourced,
         )
         print("Raw Itinerary")
         print(json_string)
