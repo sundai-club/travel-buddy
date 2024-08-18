@@ -82,7 +82,11 @@ if st.button("Submit"):
         )
         st.success("Itinerary generated successfully!")
         st.markdown(itinerary)
+
+    with st.spinner("Generating map..."):
         map_ = main.get_map(itinerary, city)
         st.pydeck_chart(map_)
+
+    with st.spinner("Generating food recommendations ..."):
         food_recommendations = main.get_food_recommendations_(city)
         st.write(food_recommendations)
