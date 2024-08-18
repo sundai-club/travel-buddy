@@ -18,8 +18,7 @@ export default async function Home() {
           className="container flex flex-col items-center justify-center gap-12 px-4 py-16"
         >
           <iframe
-            // todo: replace with actual iframe of the AWS instance
-            src="https://your-app-url.com"
+            src="https://18.118.115.69/"
             title="Integrated App"
             className="h-screen w-full rounded-xl"
           ></iframe>
