@@ -1,14 +1,14 @@
 from get_web_info import get_itinerary_info
+from get_food_recommendations import get_food_recommendations_data
 from tiktok_generator import generate_tiktok
 import openai
 from openai import OpenAI
 import json
-from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
+from stored_strings import standard_output, itinerary_system_prompt
 import ast
 import os
 import pandas as pd
 import pydeck as pdk
-from generate_itinerary import *
 
 from geopy.geocoders import Nominatim
 
@@ -62,7 +62,9 @@ def get_itinerary(
             traveling_with,
             preferences,
             additional_preferences,
-            outsourced=get_itinerary_info(location, date, traveling_with, preferences, additional_preferences)
+            outsourced=get_itinerary_info(
+                location, date, traveling_with, preferences, additional_preferences
+            ),
         )
         try:
             ast.literal_eval(json_string)
@@ -164,3 +166,6 @@ def get_map(plan, city):
     )
     return map_
 
+
+def get_food_recommendations_(city_name):
+    return get_food_recommendations_data(city_name)
