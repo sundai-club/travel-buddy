@@ -5,6 +5,14 @@ from openai import OpenAI
 import json
 from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
 import ast
+import os
+
+OPENAI_API_KEY = os.getenv('OPENAI_API_KEY')
+
+if OPENAI_API_KEY is None:
+    print("Error: OPENAI_API_KEY is not set.")
+else:
+    print("API Key retrieved successfully.")
 
 preferences = travel_keywords = [
     "Historical landmarks & museums",
@@ -40,14 +48,15 @@ def get_itinerary(location, date, traveling_with, preferences, additional_prefer
     :param additional_preferences: str
     :return: itinerary: dict
     """
-    # while True:
-    raw_itinerary_text = raw_itinerary(location, date, traveling_with, preferences, additional_preferences)
-    json_string = convert_to_json(raw_itinerary_text)
-    try:
-        ast.literal_eval(json_string)
-        return json.load(json_string)
-    except:
-        return "Failed"
+    for _ in range(3):
+        raw_itinerary_text = raw_itinerary(location, date, traveling_with, preferences, additional_preferences)
+        json_string = convert_to_json(raw_itinerary_text)
+        try:
+            ast.literal_eval(json_string)
+            return json.loads(json_string)
+        except:
+            pass
+    return "Failed"
 
 def generate_video(itinerary) -> str:
     """
