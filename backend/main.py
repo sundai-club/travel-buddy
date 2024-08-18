@@ -4,6 +4,7 @@ import openai
 from openai import OpenAI
 import json
 from stored_strings import standard_output, itinerary_system_prompt, json_system_prompt
+import ast
 
 preferences = travel_keywords = [
     "Historical landmarks & museums",
@@ -39,9 +40,14 @@ def get_itinerary(location, date, traveling_with, preferences, additional_prefer
     :param additional_preferences: str
     :return: itinerary: dict
     """
-    itinerary = generate_itinerary(location, date, traveling_with, preferences, additional_preferences)
-    return itinerary
-
+    # while True:
+    raw_itinerary_text = raw_itinerary(location, date, traveling_with, preferences, additional_preferences)
+    json_string = convert_to_json(raw_itinerary_text)
+    try:
+        ast.literal_eval(json_string)
+        return json.load(json_string)
+    except:
+        return "Failed"
 
 def generate_video(itinerary) -> str:
     """
@@ -86,4 +92,4 @@ def convert_to_json(raw_itinerary):
     ]
   )
   output = response.choices[0].message.content
-  return json.loads(output)
+  return output
