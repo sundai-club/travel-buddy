@@ -30,6 +30,7 @@ def get_itinerary_info(
             urls.append(url_info["url"])
     parsed_data = ""
     for url in urls:
+        print("  Scraping url:", url)
         try:
             parsed_data += scrape_text_from_url(url)["scraped_text"] + "\n\n"
         except:
