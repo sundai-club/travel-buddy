@@ -14,7 +14,7 @@ export default async function Home() {
 
         {/* Integration Section */}
         <section
-          id="app-integration"
+          id="app"
           className="container flex flex-col items-center justify-center gap-12 px-4 py-2"
         >
           <iframe

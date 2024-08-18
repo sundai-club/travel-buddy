@@ -1,6 +1,11 @@
+"use client";
 import React from "react";
 
 const HeroSection: React.FC = () => {
+  const handleButtonClick = () => {
+    document.getElementById("app")?.scrollIntoView({ behavior: "smooth" });
+  };
+
   return (
     <section className="flex h-screen w-full flex-col items-center justify-center bg-gray-100 lg:flex-row">
       <div className="relative h-full w-full lg:w-1/2">
@@ -33,6 +38,14 @@ const HeroSection: React.FC = () => {
         <h1 className="text-5xl font-extrabold text-red-500 lg:text-7xl">
           Travel Buddy
         </h1>
+
+        {/* Elegant Button */}
+        <button
+          onClick={handleButtonClick}
+          className="mt-8 rounded-full border-2 border-red-500 bg-white px-6 py-3 text-lg font-bold text-red-500 transition duration-300 ease-in-out hover:bg-gradient-to-r hover:from-red-500 hover:to-orange-500 hover:text-white focus:outline-none focus:ring-4 focus:ring-red-300"
+        >
+          Start Your Journey
+        </button>
 
         {/* Bottom Rolling Text */}
         <div className="absolute bottom-0 w-full overflow-hidden">
