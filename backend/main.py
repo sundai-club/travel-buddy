@@ -8,6 +8,7 @@ import ast
 import os
 import pandas as pd
 import pydeck as pdk
+from generate_itinerary import *
 
 from geopy.geocoders import Nominatim
 
@@ -61,7 +62,7 @@ def get_itinerary(
             traveling_with,
             preferences,
             additional_preferences,
-            outsourced=None,
+            outsourced=getContent(location, date, traveling_with, preferences, additional_preferences)
         )
         try:
             ast.literal_eval(json_string)
