@@ -8,6 +8,8 @@ import requests
 
 import time
 
+from query_generator import get_queries
+
 from dotenv import load_dotenv, find_dotenv
 _ = load_dotenv(find_dotenv()) # read local .env file
 
@@ -60,7 +62,7 @@ def getUrlfromBing2(count=5, search_term="top 10 places to visit in dubai"):
         url = result["url"]
         title = result["name"]
 
-        time.sleep(3)
+        time.sleep(1)
         # Attempt to make a request to the URL
         try:
             page_response = requests.get(url, headers={
@@ -100,22 +102,53 @@ def getUrlfromBing(count = 5, search_term = "top 10 places to visit in dubai"):
     results = {}
     for result in search_results["webPages"]["value"]:
         results[result["name"]] = result["url"]
-        # print(count)
         # print(result["name"])
         # print(result["url"])
         # count+=1
     return results
 
     # scrape these links
-    
-url_dict = getUrlfromBing2(count = 5, search_term = "top 10 places to visit in dubai")
 
-count = 1
-for key, v in url_dict.items():
-    print(count)
-    result = scrape_text_from_url(v)
-    print(result['scraped_text'])
-    count+=1
+
+
+def getContent(location, date, traveling_with, preferences, additional_preferences):
+
+    queries = get_queries(location, date, traveling_with, preferences, additional_preferences)
+
+    content_items = []
+    for query in queries:
+        url_dict = getUrlfromBing2(count = 5, search_term = query)
+
+        content = []
+        for key, v in url_dict.items():
+            result = scrape_text_from_url(v)
+            content.append(result['scraped_text'])
+        
+        content_items.append(''.join(content))
+    
+    return ''.join(content)
+
+# result = getContent('dubai', '7th Oct', 'husband', 'historical monument', '')
+# print(result)
+# print(len(result))
+
+# count = 1
+# content = []
+# for key, v in url_dict.items():
+#     print(count)
+#     result = scrape_text_from_url(v)
+#     content.append(result['scraped_text'])
+#     # print(result['scraped_text'])
+#     count+=1
+
+
+# final_content = ''.join(content)
+
+
+
+
+
+
 
 # url = "https://www.visitdubai.com/en/articles/top-things-to-do-in-dubai"
 # result = scrape_text_from_url(url)
