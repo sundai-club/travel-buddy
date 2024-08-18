@@ -76,7 +76,7 @@ def get_queries(location, date, traveling_with, preferences, additional_preferen
             preferences=preferences,
             additional_preferences=additional_preferences
         )
-        return get_response(single_query_prompt)
+        return [get_response(single_query_prompt)]
     else:
         return queries['queries']
 
