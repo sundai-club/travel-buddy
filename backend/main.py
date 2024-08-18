@@ -55,6 +55,7 @@ def get_itinerary(
     :param additional_preferences: str
     :return: itinerary: dict
     """
+    print("Generating itinerary ... ")
     for _ in range(3):
         json_string = raw_itinerary(
             location,
@@ -66,6 +67,8 @@ def get_itinerary(
                 location, date, traveling_with, preferences, additional_preferences
             ),
         )
+        print("Raw Itinerary")
+        print(json_string)
         try:
             ast.literal_eval(json_string)
             return json.loads(json_string)
@@ -80,7 +83,9 @@ def generate_video(itinerary) -> str:
     :param itinerary: dict
     :return: filepath: str
     """
+    print("Generating Video ...")
     filepath = generate_tiktok(itinerary)
+    print("Video saved at:", filepath)
     return filepath
 
 
@@ -124,6 +129,7 @@ def get_lat_long(place_name):
 
 
 def get_map(plan, city):
+    print("Generating map ...")
     city_loc = get_lat_long(city)
     if city_loc is None:
         print("Couldn't get location of the city")
@@ -168,4 +174,5 @@ def get_map(plan, city):
 
 
 def get_food_recommendations_(city_name):
+    print("Generating food recommendations ...")
     return get_food_recommendations_data(city_name)
