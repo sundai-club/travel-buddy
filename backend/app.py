@@ -79,15 +79,17 @@ selected_health_needs = st.selectbox(
 
 questionnaire += q_3 + "\n" + selected_health_needs + "\n"
 
-
-travel_keywords = main.get_preferences(questionnaire)
-
+if (
+    "travel_keywords" not in st.cache
+    or "questionnaire" not in st.cache
+    and questionnaire != st.cache.questionnaire
+):
+    st.cache.travel_keywords = main.get_preferences(questionnaire)
+    st.cache.questionnaire = questionnaire
 
 selected_preferences = st.multiselect(
-    "Select your travel preferences:", travel_keywords
+    "Select your travel preferences:", st.cache.travel_keywords
 )
-# Second row of input fields
-
 
 # Submit button and processing
 if st.button("Submit"):
