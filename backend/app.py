@@ -18,7 +18,7 @@ with col4:
     traveling_options = ["Friend", "Family", "Couple", "Solo", "Group"]
     people = st.radio("Who are you traveling with?", traveling_options)
 
-questionnaire = ''
+questionnaire = ""
 
 q_1 = "What type of travel experience are you hoping to create or remember?"
 # Travel Experience Type
@@ -33,18 +33,21 @@ experience_types = [
     "Culinary Travel",
     "Volunteering",
     "Luxury Travel",
-    "Road Trips"
+    "Road Trips",
 ]
 
 selected_experiences = st.multiselect(
-    "Select the types of travel experiences you're interested in:",
-    experience_types
+    "Select the types of travel experiences you're interested in:", experience_types
 )
 
-selected_experiences = '\n'.join(
-    [experience + '\n' + travel_experiences[experience] for experience in selected_experiences])
+selected_experiences = "\n".join(
+    [
+        experience + "\n" + travel_experiences[experience]
+        for experience in selected_experiences
+    ]
+)
 
-questionnaire += q_1 + '\n' + selected_experiences + '\n'
+questionnaire += q_1 + "\n" + selected_experiences + "\n"
 
 q_2 = "Do you prefer active or relaxed travel experiences?"
 # Travel Preferences
@@ -53,14 +56,11 @@ travel_preferences = [
     "Mostly active and adventurous",
     "Mostly relaxed and laid-back",
     "A mix of both active and relaxed",
-    "Other (please specify)"
+    "Other (please specify)",
 ]
 
-selected_preference = st.selectbox(
-    "Select your preference:",
-    travel_preferences
-)
-questionnaire += q_2 + '\n' + selected_preference + '\n'
+selected_preference = st.selectbox("Select your preference:", travel_preferences)
+questionnaire += q_2 + "\n" + selected_preference + "\n"
 
 
 q_3 = "Are there any health or accessibility needs we should consider?"
@@ -71,15 +71,14 @@ health_needs = [
     "Need assistance with mobility",
     "Require special dietary considerations",
     "Have a medical condition that needs attention",
-    "Other (please specify)"
+    "Other (please specify)",
 ]
 
 selected_health_needs = st.multiselect(
-    "Select any health or accessibility needs:",
-    health_needs
+    "Select any health or accessibility needs:", health_needs
 )
 
-questionnaire += q_3 + '\n' + selected_health_needs + '\n'
+questionnaire += q_3 + "\n" + selected_health_needs + "\n"
 
 
 travel_keywords = main.get_preferences(questionnaire)
@@ -124,5 +123,8 @@ if st.button("Submit"):
         st.write(food_recommendations)
 
     with st.spinner("Generating video ..."):
-        filepath = main.generate_video(itinerary)
-        st.video(filepath)
+        try:
+            filepath = main.generate_video(itinerary)
+            st.video(filepath)
+        except Exception as e:
+            print(e)

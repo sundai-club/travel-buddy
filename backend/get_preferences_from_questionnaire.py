@@ -31,10 +31,14 @@ def get_preferences(questionnaire):
     preferences = None
     max_tries = 3
     while preferences is None:
-        response = openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
-        ).choices[0].message.content
+        response = (
+            openai_client.chat.completions.create(
+                model="gpt-4o-mini",
+                messages=[{"role": "user", "content": prompt}],
+            )
+            .choices[0]
+            .message.content
+        )
         preferences = parse_response(response)
         max_tries -= 1
         if max_tries == 0:
@@ -49,4 +53,4 @@ def get_preferences(questionnaire):
             "Botanical gardens & parks",
             "Nightlife & entertainment",
         ]
-    return preferences
+    return preferences["preferences"]
