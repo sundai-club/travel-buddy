@@ -1,7 +1,7 @@
 # [Travel Buddy](http://travel.sundai.club)
 
 <h1><strong>Welcome to Travel Buddy</strong> – your perfect travel plans, personalized in 30 seconds. </h1>
-<img src="https://github.com/user-attachments/assets/113575bb-6a69-41ca-b376-28e100966eb5" width="100" />
+<img src="img.png" width="100" />
 
 <p align="center">
 	<img src="https://img.shields.io/github/last-commit/sundai-club/travel-buddy?style=flat&logo=git&logoColor=white&color=0080ff" alt="last-commit">
