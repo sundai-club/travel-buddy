@@ -8,10 +8,14 @@ def generate_tiktok(itinerary, save_dir):
     script = []
     for day, data in itinerary.items():
         day_parsed = day.replace("_", " ").replace("day", "Day")
-        for d in data:
+        for i, d in enumerate(data):
+            if i == 0:
+                text = f"{day_parsed}: {d['description']}"
+            else:
+                text = d["description"]
             script.append(
                 {
-                    "text": f"{day_parsed}: {d['location']}",
+                    "text": text,
                     "foreground_img": None,
                     "prompt": d["location"],
                 }
@@ -46,13 +50,14 @@ def generate_tiktok(itinerary, save_dir):
 
     print(output_video_paths)
     combined_script = " ".join([x["text"] for x in script])
+    final_video_path = f"{save_dir}/final_video.mp4"
     tiktokgen.audio_video.combine_videos(
         output_video_paths,
-        f"{save_dir}/final_video.mp4",
+        final_video_path,
         combined_script,
         logo_path="data/sundai_logo.png",
     )
-    return output_video_paths
+    return final_video_path
 
 
 if __name__ == "__main__":
