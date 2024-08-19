@@ -3,7 +3,7 @@ import os
 import tiktokgen
 
 
-def generate_tiktok(itinerary, save_dir):
+def generate_tiktok(itinerary, city, save_dir):
     os.makedirs(save_dir, exist_ok=True)
     script = []
     for day, data in itinerary.items():
@@ -17,7 +17,7 @@ def generate_tiktok(itinerary, save_dir):
                 {
                     "text": text,
                     "foreground_img": None,
-                    "prompt": d["location"],
+                    "prompt": f"{city} {d['location']}",
                 }
             )
 
@@ -61,6 +61,6 @@ def generate_tiktok(itinerary, save_dir):
 
 
 if __name__ == "__main__":
-    with open("data/dymmy_itirenary_small.json", "r") as file:
+    with open("data/dymmy_itirenary_paris.json", "r") as file:
         inp_script = json.loads(file.read())
     generate_tiktok(inp_script, save_dir=f"data/test_dir")

@@ -81,7 +81,7 @@ def get_itinerary(
     return "Failed"
 
 
-def generate_video(itinerary) -> str:
+def generate_video(itinerary, city) -> str:
     """
     Takes in an itinerary dict and generates a video and saves it to a file
     :param itinerary: dict
@@ -89,7 +89,7 @@ def generate_video(itinerary) -> str:
     """
     print("Generating Video ...")
     save_dir = f"data/{uuid.uuid4()}"
-    filepath = generate_tiktok(itinerary, save_dir)
+    filepath = generate_tiktok(itinerary, city, save_dir)
     print("Video saved at:", filepath)
     return filepath
 

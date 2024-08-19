@@ -114,7 +114,7 @@ if st.button("Submit"):
 
     with st.spinner("Generating video ..."):
         try:
-            filepath = main.generate_video(itinerary)
+            filepath = main.generate_video(itinerary, city)
             st.video(filepath)
         except Exception as e:
             print(e)
