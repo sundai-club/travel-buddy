@@ -10,8 +10,6 @@ from query_generator import get_queries
 from scraper import scrape_text_from_url
 from web_search import search_web
 
-subscription_key = os.environ["BING_SEARCH_API_KEY"]
-
 
 def get_itinerary_info(
     location, date, traveling_with, preferences, additional_preferences
