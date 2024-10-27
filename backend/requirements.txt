@@ -1,1 +1,5 @@
-git+https://github.com/sundai-club/TikTok_generation_platform.git@285f307d649566a1921349bb329474536dfb2657
+git+https://github.com/sundai-club/TikTok_generation_platform.git@9c50ef9be987226848e2da05c26243fd429a73f5
+streamlit
+openai
+opencv-python
+geopy

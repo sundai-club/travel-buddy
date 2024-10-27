@@ -1,5 +1,9 @@
 import requests
 import os
+from dotenv import load_dotenv
+
+load_dotenv()
+
 
 
 def parse_brave_search_results(search_results):
@@ -31,5 +35,3 @@ def brave_search(query, count=10):
         print(f"An error occurred: {e}")
         return None
     
-
-print(brave_search("openai"))
