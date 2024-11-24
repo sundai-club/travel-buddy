@@ -1,8 +1,18 @@
 import openai
 from web_search import search_web
 from scraper import scrape_text_from_url
+import re
 
 openai_client = openai.OpenAI()
+
+
+def parse_rec(response):
+    response = re.findall(r"```markdown(.*?)```", response, re.DOTALL)
+    if len(response) == 0:
+        return None
+    response = response[0].strip()
+    return response
+
 
 
 def get_query(location):
@@ -44,8 +54,30 @@ def get_food_recommendations_data(location):
     location: {location}
     scraped_data: {scraped_data}
     
-    Just output the recommendation in markdown.
-    recommendations:
+    Give the output in a markdown format in the followig way:
+    ```markdown
+    # Food Recommendations
+
+    ## Restaurant Name
+    - Cuisine: 
+    - Address: 
+    - Rating:
+
+    ## Restaurant Name 
+    - Cuisine: 
+    - Address: 
+    - Rating:
+
+    ## Restaurant 3
+    - Cuisine: 
+    - Address: 
+    - Rating:
+    .
+    .
+    .
+    ```
+
+    output:
     '''
     scraped_data = get_web_search_results(get_query(location))
     food_recommendation_prompt = food_recommendation_prompt.format(location=location, scraped_data=scraped_data)
@@ -53,4 +85,5 @@ def get_food_recommendations_data(location):
         model="gpt-4o-mini",
         messages=[{'role': 'user', 'content': food_recommendation_prompt}]
     )
-    return response.choices[0].message.content
+    response = parse_rec(response.choices[0].message.content)
+    return response
